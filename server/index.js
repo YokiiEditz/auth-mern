@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 
-app.listen(3001, () => {
-  console.log(`Server running on 3001`);
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });
