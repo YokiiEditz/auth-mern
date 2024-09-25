@@ -8,15 +8,14 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Header from "./components/Header";
 
-export const API_URL = "http://localhost:3001/api/users";
+export const API_URL = "http://localhost:3001/api";
 
 const App = () => {
   useEffect(() => {
-    const fetchData = async () => {
-      console.log("fetch data");
-    };
-
-    fetchData();
+    // const fetchData = async () => {
+    //   console.log("fetch data");
+    // };
+    // fetchData();
   }, []);
 
   return (
