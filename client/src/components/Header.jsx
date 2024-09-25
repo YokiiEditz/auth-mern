@@ -1,0 +1,30 @@
+import { Link } from "react-router-dom";
+
+const Header = () => {
+  //   const navLinks = ["home", "about", "profile", "signin", "signup"];
+  return (
+    <>
+      <div className="bg-slate-200">
+        <div className="max-w-6xl mx-auto p-3 flex justify-between items-center">
+          <Link to="/">
+            <h1 className="font-bold">Auth App</h1>
+          </Link>
+
+          <ul className="flex gap-4 items-center">
+            <Link to="/">
+              <li>Home</li>
+            </Link>
+            <Link to="/about">
+              <li>About</li>
+            </Link>
+            <Link to="/sign-in">
+              <li>Sign In</li>
+            </Link>
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Header;
