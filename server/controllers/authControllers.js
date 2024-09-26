@@ -51,4 +51,58 @@ const signin = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, signin };
+const google = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+      const { password: userPassword, ...restValues } = validUser._doc;
+      const expiryDate = new Date(Date.now() + 3600000); //1 hour
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(restValues);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      // console.log(generatedPassword);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, salt);
+      // console.log(hashedPassword);
+
+      const defaultUser =
+        req.body.name.split(" ").join("").toLowerCase() +
+        Math.floor(Math.random() * 10000).toString();
+      const newUser = new User({
+        username: defaultUser,
+        email: req.body.email,
+        password: hashedPassword,
+        profilePicture: req.body.photo,
+      });
+      await newUser.save();
+
+      //JWT token
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password: hashPass, ...rests } = newUser._doc;
+      const expiryDate = new Date(Date.now() + 3600000); //1 hour
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(rests);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { signup, signin, google };
