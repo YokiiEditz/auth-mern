@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken");
+const errorHandler = require("./error");
 
+//verify JWT
 const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
 
-  if (!token) {
-    res.status(401).send("You need to login");
-  }
+  if (!token) return next(errorHandler(401, "You are not authenticated!"));
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) res.status(403).send("Token is not valid");
+    if (err) next(errorHandler(403, "Token is not valid"));
 
     req.user = user;
     next();
