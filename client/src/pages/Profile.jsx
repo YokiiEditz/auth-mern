@@ -14,6 +14,7 @@ const Profile = () => {
   const [image, setImage] = useState(undefined);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const fileRef = useRef(null);
 
@@ -30,16 +31,23 @@ const Profile = () => {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setImagePercent(Math.round(progress));
-    });
-    (error) => {
-      setImageError(true);
-    };
-    (error) => {
-      getDownloadURL(uploadTask.snapshot.ref).then(() => {});
-    };
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      () => {
+        //console.log("Error", error);
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+          setFormData({ ...formData, profilePicture: downloadURL })
+        );
+      }
+    );
   };
 
   return (
@@ -51,16 +59,29 @@ const Profile = () => {
           type="file"
           ref={fileRef}
           hidden
+          //accept=".png,.jpg,.jpeg,.gif"
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
         />
 
         <img
-          className="size-24 self-center cursor-pointer rounded-full object-cover mt-2"
-          src={currentUser.profilePicture}
+          className="size-24 self-center cursor-pointer rounded-full object-cover mt-2 hover:opacity-80"
+          src={formData.profilePicture || currentUser.profilePicture}
           alt="profile-img"
           onClick={() => fileRef.current.click()}
         />
+
+        <p className="text-sm self-center">
+          {imageError ? (
+            <span className="text-red-700">Error uploading image</span>
+          ) : imagePercent > 0 && imagePercent < 100 ? (
+            <span>{`Uploading: ${imagePercent}%`}</span>
+          ) : imagePercent === 100 ? (
+            <span className="text-green-700">Image upload Successfully</span>
+          ) : (
+            ""
+          )}
+        </p>
 
         <input
           defaultValue={currentUser.username}
