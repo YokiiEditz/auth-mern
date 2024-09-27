@@ -3,4 +3,9 @@ const test = (req, res) => {
   console.log("test is working!");
 };
 
-module.exports = { test };
+//update user
+const updateUser = async (req, res, next) => {
+  console.log("update user is working!");
+};
+
+module.exports = { test, updateUser };

@@ -59,7 +59,6 @@ const Profile = () => {
           type="file"
           ref={fileRef}
           hidden
-          //accept=".png,.jpg,.jpeg,.gif"
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
         />

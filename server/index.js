@@ -6,9 +6,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./router/userRoutes");
 const authRoutes = require("./router/authRoutes");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
