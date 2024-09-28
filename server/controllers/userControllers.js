@@ -2,9 +2,15 @@ const errorHandler = require("../utilities/error");
 const bcrypt = require("bcryptjs");
 const User = require("../model/userModel");
 
-const test = (req, res) => {
-  res.json({ msg: "test is working!", name: "rocky" });
-  console.log("test is working!");
+const getAllUsers = async (req, res) => {
+  const user = await User.find({});
+
+  if (!user) {
+    return res.status(403).json("User not found");
+  }
+
+  res.status(200).json(user);
+  console.log("GET method is working!");
 };
 
 //update users
@@ -52,4 +58,4 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { test, updateUser, deleteUser };
+module.exports = { getAllUsers, updateUser, deleteUser };

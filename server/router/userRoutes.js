@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../utilities/verifyUser");
 const {
-  test,
+  getAllUsers,
   updateUser,
   deleteUser,
 } = require("../controllers/userControllers");
 
-router.get("/ ", test);
+router.get("/", getAllUsers);
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
 
