@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <h1>Welcome to my Auth App, {currentUser?.username.toUpperCase()}</h1>
+        <h1>Welcome to my Auth App, {currentUser?.username?.toUpperCase()}</h1>
         <br />
         <p>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur,
